@@ -1,0 +1,23 @@
+{
+  "name": "onmywayweb",
+  "version": "1.0.0",
+  "description": "Webpage for alerts to be set to the OnMyWayApp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jppleal/OnMyWayWeb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jppleal/OnMyWayWeb/issues"
+  },
+  "homepage": "https://github.com/jppleal/OnMyWayWeb#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {}
+}
