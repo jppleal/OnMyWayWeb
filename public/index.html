@@ -138,7 +138,7 @@
     <script type="module">
         // Firebase modular import
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -225,14 +225,12 @@
             const alertsRef = ref(database, 'alerts');
 
             onValue(alertsRef, (snapshot) => {
-                alertsTableBody.innerHTML = '';
+                alertsTableBody.innerHTML = ''; // Limpa a tabela antes de carregar os novos alertas
                 snapshot.forEach((childSnapshot) => {
                     const data = childSnapshot.val();
-                    const alertId = childSnapshot.key
+                    const alertId = childSnapshot.key;
                     const respondedRef = ref(database, `alerts/${alertId}/responded`);
                     let responders = [];
-                    console.log(respondedRef);
-                    console.log(responders);
 
                     onValue(respondedRef, (respondedSnapshot) => {
                         responders = [];
@@ -248,19 +246,43 @@
                             : 'N/A';
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${formattedDate}</td>
-                            <td>${data.title || 'N/A'}</td>
-                            <td>${data.message || 'N/A'}</td>
-                            <td>${data.firefighters || 0}</td>
-                            <td>${data.graduated || 0}</td>
-                            <td>${data.truckDriver || 0}</td>
-                            <td>${responders.length > 0 ? responders.join('<br>') : 'No responses yet'}</td>
-                        `;
+                    <td>${formattedDate}</td>
+                    <td>${data.title || 'N/A'}</td>
+                    <td>${data.message || 'N/A'}</td>
+                    <td>${data.firefighters || 0}</td>
+                    <td>${data.graduated || 0}</td>
+                    <td>${data.truckDriver || 0}</td>
+                    <td>${responders.length > 0 ? responders.join('<br>') : 'No responses yet'}</td>
+                    <td><button class="remove-btn" data-id="${alertId}">Remover</button></td>
+                `;
                         alertsTableBody.appendChild(row);
+
+                        // Adiciona evento ao botão "Remover"
+                        document.querySelectorAll('.remove-btn').forEach((button) => {
+                            button.addEventListener('click', (e) => {
+                                const alertId = e.target.getAttribute('data-id');
+                                if (confirm('Tem certeza de que deseja remover este alerta?')) {
+                                    const alertRef = ref(database, `alerts/${alertId}`);
+                                    remove(alertRef)
+                                        .then(() => {
+                                            alert('Alerta removido com sucesso!');
+                                            fetchAlerts(); // Atualiza a tabela após a remoção
+                                        })
+                                        .catch((error) => {
+                                            console.error('Erro ao remover alerta:', error);
+                                            alert('Erro ao remover o alerta. Tente novamente.');
+                                        });
+                                }
+                            });
+                        });
                     }, { onlyOnce: true });
                 });
             });
         }
+
+
+
+
 
         // Fetch alerts on page load
         fetchAlerts();
