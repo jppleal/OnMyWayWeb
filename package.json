@@ -1,7 +1,6 @@
 {
   "name": "onmywayweb",
   "version": "1.0.0",
-  "description": "Webpage for alerts to be set to the OnMyWayApp",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,15 +9,19 @@
     "type": "git",
     "url": "git+https://github.com/jppleal/OnMyWayWeb.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jppleal/OnMyWayWeb/issues"
   },
   "homepage": "https://github.com/jppleal/OnMyWayWeb#readme",
+  "description": "",
   "dependencies": {
-    "express": "^4.21.2",
-    "firebase-admin": "^13.0.2",
-    "firebase-functions": "^6.2.0"
+    "firebase": "^11.2.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   }
 }
